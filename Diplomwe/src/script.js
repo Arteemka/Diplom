@@ -936,7 +936,7 @@ function validInput() {
   var _loop = function _loop(i) {
     if (input[i].name == 'phone' && valid == true) {
       input[i].addEventListener('keyup', function () {
-        input[i].value = input[i].value.replace(/[^\+0-9\(\) ]/ig, '');
+        input[i].value = input[i].value.replace(/[^\+0-9\(\)]/ig, '');
       });
     } else if (input[i].name == 'name' && valid == true) {
       input[i].addEventListener('keyup', function () {
