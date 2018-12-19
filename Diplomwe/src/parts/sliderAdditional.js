@@ -1,10 +1,6 @@
 "use strict";
 
-require("core-js/modules/web.dom.iterable");
 
-require("core-js/modules/web.dom.iterable");
-
-require("core-js/modules/web.dom.iterable");
 
 function sliderHorizontal() {
   "use strict";

@@ -1,22 +1,13 @@
 "use strict";
 
-require("core-js/modules/es6.regexp.replace");
 
-require("core-js/modules/es6.function.name");
-
-require("core-js/modules/es6.regexp.replace");
-
-require("core-js/modules/es6.function.name");
-
-require("core-js/modules/es6.function.name");
-
-require("core-js/modules/es6.regexp.replace");
 
 function validInput() {
   "use strict";
 
   var textArea = document.getElementsByTagName('textarea')[0],
-      input = document.getElementsByTagName('input');
+      input = document.getElementsByTagName('input'),
+      valid =true;
 
   var _loop = function _loop(i) {
     if (input[i].name == 'phone' && valid == true) {

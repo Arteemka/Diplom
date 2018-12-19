@@ -1,11 +1,5 @@
 "use strict";
 
-require("core-js/modules/web.dom.iterable");
-
-require("core-js/modules/web.dom.iterable");
-
-require("core-js/modules/web.dom.iterable");
-
 function form() {
   "use strict";
   var message = {
@@ -22,7 +16,7 @@ function form() {
       form.addEventListener('submit', function (event) {
        
         event.preventDefault();
-        
+         console.log(1);
   
         function postData() {
           return new Promise(function (resolve, reject) {
@@ -77,9 +71,9 @@ function form() {
   
     var form = document.querySelectorAll('form');
     form.forEach(function (e) {
-      if (!e.classList.contains('calculator-form')) {
+     
         sendForm(e);
-      }
+
     });
   
   } 
