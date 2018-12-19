@@ -141,7 +141,7 @@ function burger() {
       li = document.getElementsByClassName('burger-menu');
 
   if (window.innerWidth <= 768) {
-    console.log(burger);
+    
     burger.addEventListener('click', function () {
       if (li[0].style.display == 'none' || li[0].style.display == '') {
         li[0].style.display = 'block';
@@ -239,7 +239,7 @@ function button() {
   var but = function but() {
     for (var i = 0; i < b.length; i++) {
       b[i].onclick = function () {
-        console.log(this.innerHTML);
+        
       };
     }
   };
@@ -250,7 +250,7 @@ function button() {
     check = true;
   }
 
-  console.log(check);
+  
 
   if (check) {
     window.onscroll = function () {
@@ -291,8 +291,7 @@ function buttonStyle() {
 
   var headerLg = document.querySelectorAll('.hidden-lg'),
       buttonTransparent = document.getElementsByClassName('button-transparent')[0];
-  console.log(buttonTransparent);
-  console.log(headerLg);
+  
   buttonTransparent.addEventListener('click', function () {
     for (var i = 0; i < headerLg.length; i++) {
       headerLg[i].style.setProperty('display', 'block', 'important');
@@ -409,7 +408,7 @@ function filter() {
       girl = document.getElementsByClassName('portfolio-block girl'),
       all = document.getElementsByClassName('portfolio-block all'),
       noPortfolio = document.getElementsByClassName('portfolio-no')[0];
-  console.log(noPortfolio);
+  
   girlButton.addEventListener('click', function () {
     for (var i = 0; i < filter.length; i++) {
       if (this.classList) {
