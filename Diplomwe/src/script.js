@@ -628,12 +628,14 @@ function form() {
             statusMessage = document.createElement('div'),
             input = form.querySelectorAll('input'),
             textarea = form.querySelectorAll('textarea');
-        statusMessage.classList.add('status');
-
+        statusMessage.classList.add('status-message');
+var textArea = document.getElementsByTagName('textarea')[0],
+      input1 = document.getElementsByTagName('input'),
+      valid =true;
         form.addEventListener('submit', function (event) {
             let innerCode;
             event.preventDefault();
-           
+            let tel = form.querySelector('input[name=phone]');
 
             function postData() {
                 
@@ -675,6 +677,35 @@ function form() {
                     if (timeLog == 2000) {
                         form.innerHTML = innerCode;
                         clearInput();
+
+
+  var _loop = function _loop(i) {
+    if (input1[i].name == 'phone' && valid == true) {
+      input1[i].addEventListener('keyup', function () {
+        input1[i].value = input1[i].value.replace(/[^\+0-9\(\) ]/ig, '');
+      });
+    } else if (input1[i].name == 'name' && valid == true) {
+      input1[i].addEventListener('keyup', function () {
+        input1[i].value = input1[i].value.replace(/[^а-яА-ЯёЁ\s]/ig, '');
+      });
+    } else if (input1[i].name == 'email' && valid == true) {
+      input1[i].addEventListener('keyup', function () {
+        input1[i].value = input1[i].value.replace(/[^a-zA-Z0-9/.@.\.]/ig, '');
+      });
+    } else if (input1[i].name == 'message' && valid == true) {
+      input1[i].addEventListener('keyup', function () {
+        input1[i].value = input1[i].value.replace(/[^а-яА-ЯёЁ\s]/ig, '');
+      });
+    }
+  };
+
+  for (var i = 0; i < input1.length; i++) {
+    _loop(i);
+  }
+
+  textArea.addEventListener('keyup', function () {
+    textArea.value = textArea.value.replace(/[^а-яА-ЯёЁ\s]/ig, '');
+  });
                         if (form.className.indexOf('popup') != -1) {
                             let popupClass = document.querySelector('.' + form.className.slice(0, -5));
                             popupClass.style.display = 'none';
@@ -688,23 +719,24 @@ function form() {
            
                 postData()
                     .then(() => {
-                        closeForm('<p>Загрузка подождите пожалуйста</p>');
+                        closeForm('<p>Идет отправка</p>');
                     })
                     .then(() => {
-                        closeForm('<p>Запрос отправлем с вами свяжутся.</p>');
+                        closeForm('<p>Ваш запрос отправлен.<br>Наши менеджеры свжутся с вами.</p>');
                     })
                     .catch(() => {
-                        closeForm('<p>Произошла ошибка!</p>');
+                        closeForm('<p>Произошла ошибка</p>');
                     })
             
         });
     }
-    var form = document.querySelectorAll('form');
-    form.forEach(function (e) {
-     
-        sendForm(e);
-
+    let form = document.querySelectorAll('form');
+    form.forEach(function(e) {
+        if (!e.classList.contains('calculator-form')) {
+            sendForm(e);
+        }
     });
+
   
   } 
 
@@ -936,7 +968,7 @@ function validInput() {
   var _loop = function _loop(i) {
     if (input[i].name == 'phone' && valid == true) {
       input[i].addEventListener('keyup', function () {
-        input[i].value = input[i].value.replace(/[^\+0-9\(\)]/ig, '');
+        input[i].value = input[i].value.replace(/[^\+0-9\(\) ]/ig, '');
       });
     } else if (input[i].name == 'name' && valid == true) {
       input[i].addEventListener('keyup', function () {
