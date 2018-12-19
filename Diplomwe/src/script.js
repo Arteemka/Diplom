@@ -1863,6 +1863,47 @@ function button() {
       document.body.style.overflow = '';
     }
   });
+  var b = document.getElementsByTagName('button'),
+      check;
+
+  var but = function but() {
+    for (var i = 0; i < b.length; i++) {
+      b[i].onclick = function () {
+        console.log(this.innerHTML);
+      };
+    }
+  };
+
+  if (but()) {
+    check = false;
+  } else {
+    check = true;
+  }
+
+  console.log(check);
+
+  if (check) {
+    window.onscroll = function () {
+      var clientHeight = document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight;
+      var documentHeight = document.documentElement.scrollHeight ? document.documentElement.scrollHeight : document.body.scrollHeight;
+      var scrollTop = window.pageYOffset ? window.pageYOffset : document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop;
+
+      if (documentHeight - clientHeight <= scrollTop) {
+        if (popupGift) {
+          popupGift.style.display = 'block';
+          popupGift.classList.add('.more-splash');
+          document.body.style.overflow = 'hidden';
+          elements.remove(elements);
+          document.body.style.overflow = '';
+        }
+      }
+    };
+  }
+  setTimeout(function () {
+    popupConsultation.style.display = 'block';
+    popupConsultation.classList.add('.more-splash');
+    document.body.style.overflow = 'hidden';
+  }, 60000);
 }
 
 module.exports = button;
@@ -2222,64 +2263,81 @@ __webpack_require__(/*! core-js/modules/web.dom.iterable */ "./node_modules/core
 
 function form() {
   "use strict";
-
   var message = {
     loading: 'Загрузка...',
     success: 'Спасибо! Скоро мы с вами свяжемся',
     failure: 'Что-то пошло не так...'
   };
-  var form = document.querySelector('.form-three'),
-      inputForm = form.getElementsByTagName('input'),
-      formone = document.querySelector('.form'),
-      formtwo = document.querySelector('.form-two'),
-      inputForm1 = formone.getElementsByTagName('input')[1],
-      inputForm2 = formtwo.getElementsByTagName('input'),
-      statusMessage = document.createElement('div');
-  statusMessage.classList.add('status');
-
-  var inputFormm = function inputFormm(e) {
-    e.addEventListener('submit', function (event) {
-      event.preventDefault();
-      e.appendChild(statusMessage);
-      var request = new XMLHttpRequest();
-      request.open('POST', 'mailer/smart.php');
-      request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-      var formData = new FormData(e);
-      var obj = {}; // создаем объект для формата JSON
-
-      formData.forEach(function (value, key) {
-        obj[key] = value;
-      });
-      var json = JSON.stringify(obj);
-      request.send(json);
-      request.addEventListener('readystatechange', function () {
-        if (request.readyState < 4) {
-          statusMessage.innerHTML = message.loading;
-        } else if (request.readyState === 4 && request.status == 200) {
-          statusMessage.innerHTML = message.success;
-        } else {
-          statusMessage.innerHTML = message.failure;
+    function sendForm(e) {
+      var form = e,
+          statusMessage = document.createElement('div'),
+          input = form.querySelectorAll('input'),
+          textarea = form.querySelectorAll('textarea');
+      statusMessage.classList.add('status');
+      form.addEventListener('submit', function (event) {
+       
+        event.preventDefault();
+        
+  
+        function postData() {
+          return new Promise(function (resolve, reject) {
+            var request = new XMLHttpRequest(); // создаем запрос к серверу
+           
+            request.open('POST', 'server.php'); // выставляем настройки запроса
+  
+            request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            var formData = new FormData(form); //получаем все данные с формы
+  
+            request.send(formData); // отправляем данные на сервер
+  
+            
+            form.innerHTML = '';
+            form.appendChild(statusMessage);
+            request.addEventListener('readystatechange', function () {
+              // смотрим состояние запроса
+              if (request.readyState < 4) {
+                resolve();
+              } else if (request.readyState == 4 && request.status == 200) {
+                resolve();
+              } else {
+                reject();
+              }
+            });
+          });
         }
-      });
-
-      for (var i = 0; i < inputForm.length; i++) {
-        inputForm[i].value = '';
-      }
-
-      for (var _i = 0; _i < inputForm1.length; _i++) {
-        inputForm1[_i].value = '';
-      }
-
-      for (var _i2 = 0; _i2 < inputForm2.length; _i2++) {
-        inputForm2[_i2].value = '';
-      }
+  
+        function clearInput() {
+          for (var i = 0; i < input.length; i++) {
+            input[i].value = '';
+          }
+  
+          for (var _i = 0; _i < textarea.length; _i++) {
+            textarea[_i].value = '';
+          }
+        }
+  
+        
+          postData().then(function () {
+            return statusMessage.innerHTML = message.loading;
+          }).then(function () {
+            return statusMessage.innerHTML = message.success;
+          }).catch(function () {
+            return statusMessage.innerHTML = message.failure;
+          }).then(clearInput);
+          
+          });
+        
+      
+    }
+  
+    var form = document.querySelectorAll('form');
+    form.forEach(function (e) {
+      
+        sendForm(e);
+      
     });
-  };
-
-  inputFormm(form);
-  inputFormm(formone);
-  inputFormm(formtwo);
-}
+  
+  } 
 
 module.exports = form;
 
@@ -2301,37 +2359,67 @@ function picture() {
   var sizeOne = document.getElementsByClassName('size-1')[0],
       sizeTwo = document.getElementsByClassName('size-2')[0],
       sizeThree = document.getElementsByClassName('size-3')[0],
-      sizeFour = document.getElementsByClassName('size-4')[0];
+      sizeFour = document.getElementsByClassName('size-4')[0],
+      sizes = document.querySelectorAll( '.size'),
+      startPrice = document.querySelectorAll( '.starting-price'),
+      finalprice = document.querySelectorAll( '.final-price');
 
+      
   sizeOne.onmouseover = function () {
+    sizes[0].style.display = 'none';
+    startPrice[0].style.display = 'none';
+    finalprice[0].style.display = 'none';
     this.src = './img/sizes-1-1.png';
+    
   };
 
   sizeTwo.onmouseover = function () {
+    sizes[1].style.display = 'none';
+    startPrice[1].style.display = 'none';
+    finalprice[1].style.display = 'none';
     this.src = './img/sizes-2-1.png';
   };
 
   sizeThree.onmouseover = function () {
+    
+    sizes[2].style.display = 'none';
+    startPrice[2].style.display = 'none';
+    finalprice[2].style.display = 'none';
     this.src = './img/sizes-3-1.png';
   };
 
   sizeFour.onmouseover = function () {
+    sizes[3].style.display = 'none';
+    startPrice[3].style.display = 'none';
+    finalprice[3].style.display = 'none';
     this.src = './img/sizes-4-1.png';
   };
 
   sizeOne.onmouseout = function () {
+    sizes[0].style.display = 'block';
+    startPrice[0].style.display = 'block';
+    finalprice[0].style.display = 'block';
     this.src = './img/sizes-1.png';
   };
 
   sizeTwo.onmouseout = function () {
+    sizes[1].style.display = 'block';
+    startPrice[1].style.display = 'block';
+    finalprice[1].style.display = 'block';
     this.src = './img/sizes-2.png';
   };
 
   sizeThree.onmouseout = function () {
+    sizes[2].style.display = 'block';
+    startPrice[2].style.display = 'block';
+    finalprice[2].style.display = 'block';
     this.src = './img/sizes-3.png';
   };
 
   sizeFour.onmouseout = function () {
+    sizes[3].style.display = 'block';
+    startPrice[3].style.display = 'block';
+    finalprice[3].style.display = 'block';
     this.src = './img/sizes-4.png';
   };
 }
@@ -2473,11 +2561,7 @@ module.exports = slider;
 function timer() {
   "use strict";
 
-  setTimeout(function () {
-    popupConsultation.style.display = 'block';
-    popupConsultation.classList.add('.more-splash');
-    document.body.style.overflow = 'hidden';
-  }, 60000);
+  
 }
 
 module.exports = timer;

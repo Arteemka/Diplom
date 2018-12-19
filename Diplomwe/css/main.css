@@ -1751,3 +1751,5 @@ height: 100%;
        
         }
         .main-slider{overflow:hidden;height:670px;position:relative}
+        .popup-consultation-form{margin:0;padding-top:0;padding-bottom:0}
+        .popup-consultation .popup-consultation-form input,.popup-consultation .popup-consultation-form textarea{border:none;border-radius:50px;background-color:#fff;padding:1.5rem;margin-bottom:2.5rem;width:100%;color:inherit;resize:none}
